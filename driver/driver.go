@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/credentials/ec2rolecreds"
 	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/aws/ec2metadata"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/blang/semver"
 	"github.com/concourse/semver-resource/models"
@@ -41,7 +42,7 @@ func FromSource(source models.Source) (Driver, error) {
 		var creds *credentials.Credentials
 
 		if source.InstanceProfile {
-			creds = credentials.NewCredentials(&ec2rolecreds.EC2RoleProvider{})
+			creds = credentials.NewCredentials(&ec2rolecreds.EC2RoleProvider{Client: ec2metadata.New(session.New())})
 		} else if source.AccessKeyID == "" && source.SecretAccessKey == "" {
 			creds = credentials.AnonymousCredentials
 		} else {
