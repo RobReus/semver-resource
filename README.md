@@ -1,5 +1,6 @@
 # Semver Resource
 
+
 A resource for managing a version number. Persists the version number in one of several backing stores.
 
 
