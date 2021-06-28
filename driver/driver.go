@@ -7,6 +7,7 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/credentials/ec2rolecreds"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/blang/semver"
@@ -39,7 +40,9 @@ func FromSource(source models.Source) (Driver, error) {
 	case models.DriverUnspecified, models.DriverS3:
 		var creds *credentials.Credentials
 
-		if source.AccessKeyID == "" && source.SecretAccessKey == "" {
+		if source.InstanceProfile {
+			creds = credentials.NewCredentials(&ec2rolecreds.EC2RoleProvider{})
+		} else if source.AccessKeyID == "" && source.SecretAccessKey == "" {
 			creds = credentials.AnonymousCredentials
 		} else {
 			creds = credentials.NewStaticCredentials(source.AccessKeyID, source.SecretAccessKey, source.SessionToken)
