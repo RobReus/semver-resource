@@ -57,6 +57,7 @@ type Source struct {
 	AccessKeyID          string `json:"access_key_id"`
 	SecretAccessKey      string `json:"secret_access_key"`
 	SessionToken         string `json:"session_token"`
+	InstanceProfile      bool   `json:"instance_profile"`
 	RegionName           string `json:"region_name"`
 	Endpoint             string `json:"endpoint"`
 	DisableSSL           bool   `json:"disable_ssl"`
